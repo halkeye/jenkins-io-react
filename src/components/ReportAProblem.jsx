@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function ReportAProblem({title, url, sourcePath, githubRepo}) {
+    const _document = typeof document !== `undefined` ? document : {};
+
     const queryParams = new URLSearchParams();
     queryParams.append("labels", "bug");
     queryParams.append("template", "4-bug.md");
-    queryParams.append("title", `${title || document.title} page - TODO: Put a summary here`);
+    queryParams.append("title", `${title || _document.title} page - TODO: Put a summary here`);
     queryParams.append("body", `
-        Problem with the [${title || document.title}](${url}) page,
+        Problem with the [${title || _document.title}](${url}) page,
         [source file](https://github.com/${githubRepo}/tree/master/src/${sourcePath})
 
         TODO: Describe the expected and actual behavior here
