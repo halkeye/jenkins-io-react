@@ -2,6 +2,9 @@
   "name": "@halkeye/jenkins-io-react",
   "version": "0.0.1",
   "description": "Random parts shared between jenkins.io",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "node src/serve.js",
