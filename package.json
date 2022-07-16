@@ -1,6 +1,6 @@
 {
   "name": "@halkeye/jenkins-io-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Random parts shared between jenkins.io",
   "publishConfig": {
     "access": "public"
