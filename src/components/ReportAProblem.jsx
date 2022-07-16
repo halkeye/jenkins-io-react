@@ -1,23 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ReportAProblem({reportProblemTitle, reportProblemUrl, reportProblemRelativeSourcePath}) {
-    const title = `Report a problem with ${reportProblemRelativeSourcePath}`;
-    const pluginSiteReportUrl = `https://github.com/jenkins-infra/plugin-site/issues/new?labels=bug&template=4-bug.md&title=${reportProblemTitle} page - TODO: Put a summary here&body=Problem with the [${reportProblemTitle}](https://plugins.jenkins.io${reportProblemUrl}) page, [source file](https://github.com/jenkins-infra/plugin-site/tree/master/src/${reportProblemRelativeSourcePath})%0A%0ATODO: Describe the expected and actual behavior here %0A%0A%23%23 Screenshots %0A%0A TODO: Add screenshots if possible %0A%0A%23%23 Possible Solution %0A%0A%3C!-- If you have suggestions on a fix for the bug, please describe it here. --%3E %0A%0AN/A`;
+function ReportAProblem({title, url, sourcePath, githubRepo}) {
+    const queryParams = new URLSearchParams();
+    queryParams.append("labels", "bug");
+    queryParams.append("template", "4-bug.md");
+    queryParams.append("title", `${title || document.title} page - TODO: Put a summary here`);
+    queryParams.append("body", `
+        Problem with the [${title || document.title}](${url}) page,
+        [source file](https://github.com/${githubRepo}/tree/master/src/${sourcePath})
+
+        TODO: Describe the expected and actual behavior here
+
+        Screenshots
+
+        TODO: Add screenshots if possible
+
+        Possible Solution
+
+        <!-- If you have suggestions on a fix for the bug, please describe it here. --
+
+        /A`);
+    const pluginSiteReportUrl = `https://github.com/${githubRepo}/issues/new?${queryParams.toString()}`;
     return (
-        <p className="box">
-            <a href={reportProblemUrl.includes('://') ? reportProblemUrl : pluginSiteReportUrl} title={title}>
-                <ion-icon class="report" name="warning" />
-                Report a problem
-            </a>
-        </p>
+        <a href={pluginSiteReportUrl} title={`Report a problem with ${sourcePath}`}>
+            <ion-icon class="report" name="warning" />
+            Report a problem
+        </a>
     );
 }
 
 ReportAProblem.propTypes = {
-    reportProblemTitle: PropTypes.string.isRequired,
-    reportProblemUrl: PropTypes.string.isRequired,
-    reportProblemRelativeSourcePath: PropTypes.string.isRequired
+    title: PropTypes.string,
+    url: PropTypes.string,
+    sourcePath: PropTypes.string
 };
+
+ReportAProblem.displayName = "ReportAProblem"
 
 export default ReportAProblem;

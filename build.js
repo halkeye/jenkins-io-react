@@ -4,11 +4,15 @@ const {dependencies} = require("./package.json");
 
 [
   'src/index.jsx',
+  // 'src/makeLayout.js', // platform: 'node'
   'src/components/ReportAProblem.jsx',
+  'src/components/SiteVersion.jsx',
+  'src/components/ImproveThisPage.jsx',
 ].forEach(entryPoint => {
   const shared = {
     bundle: true,
-    entryPoints: [],
+    entryPoints: [entryPoint],
+    loader: {'.js': 'jsx'},
     // Treat all dependencies in package.json as externals to keep bundle size to a minimum
     external: Object.keys(dependencies),
     logLevel: "info",
@@ -18,7 +22,6 @@ const {dependencies} = require("./package.json");
 
   build({
     ...shared,
-    entryPoints: [entryPoint],
     format: "esm",
     outfile: `./dist/${path.parse(entryPoint).name}.esm.js`,
     target: ["esnext", "node16"],

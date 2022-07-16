@@ -1,10 +1,11 @@
 /* eslint-env node */
 /* eslint-disable no-console */
 const axios = require('axios');
+const styleToObject = require('style-to-object');
 const cheerio = require('cheerio');
 const fs = require('fs/promises');
 
-async function makeReactLayout(siteUrl) {
+async function makeReactLayout(siteUrl, extraCss = []) {
     const headerUrl = process.env.HEADER_FILE || 'https://www.jenkins.io/template/index.html';
     const manifestUrl = new URL('/site.webmanifest', headerUrl).toString();
 
@@ -14,18 +15,16 @@ async function makeReactLayout(siteUrl) {
 
     const jsxLines = [
         'import React from \'react\';',
+        'import {useStaticQuery, graphql} from \'gatsby\';',
         'import { Helmet } from \'react-helmet\';',
+        'import SiteVersion from \'@halkeye/jenkins-io-react/dist/SiteVersion.cjs.js\';',
+        'import ReportAProblem from \'@halkeye/jenkins-io-react/dist/ReportAProblem.cjs.js\';',
+        'import ImproveThisPage from \'@halkeye/jenkins-io-react/dist/ImproveThisPage.cjs.js\';',
         'import \'./layout.css\';',
     ];
 
     const cssLines = [
-        //'@import \'./styles/ubuntu-fonts.css\';',
-        //'@import \'./styles/lato-fonts.css\';',
-        //'@import \'./styles/roboto-fonts.css\';',
-        //'@import \'./styles/base.css\';',
-        //'@import \'./styles/font-icons.css\';',
-        //'@import \'github-syntax-light/lib/github-light.css\';'
-    ];
+    ].concat(extraCss);
 
     console.info(`Downloading header file from '${headerUrl}'`);
     const parsedHeaderUrl = new URL(headerUrl);
@@ -43,7 +42,7 @@ async function makeReactLayout(siteUrl) {
     $('title').text('Title must not be empty');
     $('nav .active.nav-item').removeClass('active'); // remove highlighted link
     if (siteUrl) {
-        $(`.nav-item a[href*="${ siteUrl }"]`).parent('.nav-item').addClass('active');
+        $(`.nav-item a[href*="${siteUrl}"]`).parent('.nav-item').addClass('active');
         $(`.nav-link[href*="${siteUrl}"]`).attr('href', '/');
     }
     $('img, script').each(function () {
@@ -83,6 +82,8 @@ async function makeReactLayout(siteUrl) {
     if (process.env.NETLIFY) {
         $('#footer .col-md-4').prepend('<div class="mb-3"><a href="https://www.netlify.com"><img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" /></a></div>');
     }
+    $('#footer .col-md-4').prepend($('<p class="box">').append('<ImproveThisPage />').append('<ReportAProblem />'));
+    $('#creativecommons').append('<SiteVersion />');
     $('link[rel="stylesheet"]').each((_, elm) => {
         elm = $(elm);
         cssLines.push(`@import url('${elm.attr('href')}');`);
@@ -127,6 +128,9 @@ async function makeReactLayout(siteUrl) {
         }
         let attrs = Object.entries(node.attribs || {}).map(([key, val]) => {
             key = keyConversion[key] || key;
+            if (key === 'style') {
+                return `${key}={${JSON.stringify(styleToObject(val))}}`;
+            }
             return `${key}=${JSON.stringify(val)}`;
         }).join(' ');
         if (node.name === 'script') {
@@ -151,16 +155,33 @@ async function makeReactLayout(siteUrl) {
             node.children.forEach(child => handleNode(child, indent + 2));
             jsxLines.push(`${prefix}</${node.name}>`);
         } else {
-            const tempAttrs = attrs;
-
             if (!node.name) {
                 console.log(node);
             }
-            jsxLines.push(`${prefix}<${node.name} ${tempAttrs} />`);
+            if (node.name === 'siteversion') {
+                jsxLines.push(`${prefix}<SiteVersion buildTime={buildTime} githubRepo={githubRepo} />`);
+            } else if (node.name === 'improvethispage') {
+                jsxLines.push(`${prefix}<ImproveThisPage sourcePath={sourcePath} githubRepo={githubRepo} />`);
+            } else if (node.name === 'reportaproblem') {
+                jsxLines.push(`${prefix}<ReportAProblem sourcePath={sourcePath} githubRepo={githubRepo} />`);
+            } else {
+                jsxLines.push(`${prefix}<${node.name} ${attrs} />`);
+            }
         }
     };
 
-    jsxLines.push('export default function Layout({ children, id}) {');
+    jsxLines.push('export default function Layout({ children, id, reportProblemUrl, reportProblemTitle, sourcePath}) {');
+    jsxLines.push(`   const {site: { buildTime, siteMetadata: { githubRepo, siteUrl }}} = useStaticQuery(graphql\`
+        query {
+            site {
+                buildTime
+                siteMetadata {
+                    githubRepo
+                    siteUrl
+                }
+            }
+        }
+    \`);`);
     jsxLines.push('  return (');
     jsxLines.push('    <div id={id}>');
     jsxLines.push('      <Helmet>');
