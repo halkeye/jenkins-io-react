@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ImproveThisPage({sourcePath, githubRepo}) {
+type ImproveThisPageProps = {
+    sourcePath?: string
+    githubRepo?: string
+}
+
+function ImproveThisPage({sourcePath, githubRepo}: ImproveThisPageProps) : JSXNode {
     if (!sourcePath) { return; }
     if (!githubRepo) { return; }
     return (

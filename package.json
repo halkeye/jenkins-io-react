@@ -11,7 +11,9 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "build": "npm run clean && node build.mjs",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "lint-staged": "lint-staged",
+    "lint": "eslint --ext .tsx,.ts -c .eslintrc.js"
   },
   "keywords": [
     "jenkins-infra",
@@ -31,6 +33,7 @@
     "eslint-plugin-n": "^15.2.5",
     "eslint-plugin-promise": "^6.0.1",
     "eslint-plugin-react": "^7.31.8",
+    "lint-staged": "^13.0.3",
     "live-server": "^1.2.2",
     "np": "^7.6.2",
     "rimraf": "^3.0.2",
@@ -53,5 +56,8 @@
   "files": [
     "dist/*",
     "makeLayout.js"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "npm run lint --"
+  }
 }
