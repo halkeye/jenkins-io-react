@@ -18,5 +18,21 @@ module.exports = {
     'react'
   ],
   rules: {
+    '@typescript-eslint/strict-boolean-expressions': [
+      'error',
+      {
+        allowString: true,
+        allowNullableString: true,
+        allowNumber: false,
+        allowNullableObject: false,
+        allowNullableBoolean: false,
+        allowNullableNumber: false,
+        allowAny: false
+      }
+    ],
+    "@typescript-eslint/semi": [
+      "error",
+      "always"
+    ],
   }
 }

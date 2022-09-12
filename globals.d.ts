@@ -2,6 +2,8 @@
 
 // type CustomElement<T> = Partial<T & DOMAttributes<T> & {children: any;}>;
 
+import '@testing-library/jest-dom/extend-expect';
+
 export {};
 
 declare global {
@@ -9,7 +11,7 @@ declare global {
 
   namespace JSX {
     interface IntrinsicElements {
-      ['ion-icon']: any;
+      ['ion-icon']: any
     }
   }
 }

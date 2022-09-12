@@ -1,27 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-type ImproveThisPageProps = {
-    sourcePath?: string
-    githubRepo?: string
+export interface ImproveThisPageProps {
+  sourcePath?: string | null
+  githubRepo?: string | null
 }
 
-function ImproveThisPage({sourcePath, githubRepo}: ImproveThisPageProps) : JSXNode {
-    if (!sourcePath) { return; }
-    if (!githubRepo) { return; }
-    return (
+function ImproveThisPage ({ sourcePath, githubRepo }: ImproveThisPageProps): JSXNode {
+  if (!sourcePath) { return null; }
+  if (!githubRepo) { return null; }
+  return (
         <a href={`https://github.com/${githubRepo}/edit/main/${sourcePath}`} title={`Edit ${sourcePath} on GitHub`}>
             <ion-icon name="logo-github" style={{ color: 'black' }}></ion-icon>
             Improve this page
         </a>
-    );
+  );
 }
 
-ImproveThisPage.propTypes = {
-    sourcePath: PropTypes.string,
-    githubRepo: PropTypes.string
-};
-
-ImproveThisPage.displayName = "ImproveThisPage"
+ImproveThisPage.displayName = 'ImproveThisPage';
 
 export default ImproveThisPage;

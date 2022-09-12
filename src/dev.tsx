@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import ImproveThisPage from './components/ImproveThisPage'
+import ImproveThisPage from './components/ImproveThisPage';
 
-const container = document.getElementById("root");
-const root = createRoot(container!);
+const container = document.getElementById('root');
+const root = createRoot(container!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 root.render((<div>
   <h1>Improve This Page</h1>
   <h2>No Args</h2>
