@@ -1,12 +1,14 @@
 import React from 'react';
 import TimeAgo from 'react-timeago';
+// @ts-expect-error
 import enStrings from 'react-timeago/lib/language-strings/en';
+// @ts-expect-error
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 
 interface SiteVersionProps {
-  commit: string
-  githubRepo: string
-  buildTime: string
+  commit?: string
+  githubRepo?: string | null
+  buildTime?: number
 }
 
 export const formatter = buildFormatter(Object.assign(enStrings, {
@@ -14,22 +16,23 @@ export const formatter = buildFormatter(Object.assign(enStrings, {
   weeks: '%d weeks'
 }));
 
-function SiteVersion ({ buildTime, githubRepo, commit }: SiteVersionProps): JSXNode {
+function SiteVersion ({ buildTime = 0, githubRepo, commit }: SiteVersionProps): JSXNode {
+  if (!commit && buildTime === 0 && !githubRepo) { return null; }
   return (
         <p>
-            <a href={`https://github.com/${githubRepo}/commit/${commit}`}>{commit.substring(0, 7)}</a>
-            <br />
-            <small>
-                Last Built:
-                {typeof window !== 'undefined' ? <TimeAgo date={new Date(buildTime)} formatter={formatter}/> : buildTime}
-            </small>
+            {githubRepo && commit && <a href={`https://github.com/${githubRepo}/commit/${commit}`}>{commit.substring(0, 7)}</a>}
+            {buildTime > 0 && (
+              <>
+                <br />
+                <small>
+                  Last Built:
+                  {typeof window !== 'undefined' ? <TimeAgo date={new Date(buildTime)} formatter={formatter}/> : buildTime}
+                </small>
+              </>
+            )}
         </p>
   );
 }
-
-SiteVersion.defaultProps = {
-  commit: 'unknown'
-};
 
 SiteVersion.displayName = 'SiteVersion';
 
