@@ -1,20 +1,18 @@
-const {build} = require("esbuild");
-const path = require('path');
-const {dependencies} = require("./package.json");
+import {build} from "esbuild";
+import {nodeExternalsPlugin} from 'esbuild-node-externals';
+import path from 'path';
 
 [
-  'src/index.jsx',
-  // 'src/makeLayout.js', // platform: 'node'
-  'src/components/ReportAProblem.jsx',
-  'src/components/SiteVersion.jsx',
-  'src/components/ImproveThisPage.jsx',
+  'src/index.tsx',
+  // 'src/makeLayout.ts', // platform: 'node'
+  'src/components/ReportAProblem.tsx',
+  'src/components/SiteVersion.tsx',
+  'src/components/ImproveThisPage.tsx',
 ].forEach(entryPoint => {
   const shared = {
     bundle: true,
     entryPoints: [entryPoint],
-    loader: {'.js': 'jsx'},
-    // Treat all dependencies in package.json as externals to keep bundle size to a minimum
-    external: Object.keys(dependencies),
+    loader: {'.js': 'jsx', '.ts': 'tsx'},
     logLevel: "info",
     minify: true,
     sourcemap: true,
@@ -25,6 +23,7 @@ const {dependencies} = require("./package.json");
     format: "esm",
     outfile: `./dist/${path.parse(entryPoint).name}.esm.js`,
     target: ["esnext", "node16"],
+    plugins: [nodeExternalsPlugin()]
   });
 
   build({
@@ -32,5 +31,6 @@ const {dependencies} = require("./package.json");
     format: "cjs",
     outfile: `./dist/${path.parse(entryPoint).name}.cjs.js`,
     target: ["esnext", "node16"],
+    plugins: [nodeExternalsPlugin()]
   });
 })

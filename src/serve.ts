@@ -1,6 +1,6 @@
-const {build} = require("esbuild");
-const chokidar = require("chokidar");
-const liveServer = require("live-server");
+import {build} from "esbuild";
+import chokidar from "chokidar";
+import liveServer from "live-server";
 
 (async () => {
   const builder = await build({
@@ -12,7 +12,7 @@ const liveServer = require("live-server");
         process.env.NODE_ENV || "development"
       ),
     },
-    entryPoints: ["src/dev.jsx"],
+    entryPoints: ["src/dev.tsx"],
     // Uses incremental compilation (see `chokidar.on`).
     incremental: true,
     // Removes whitespace, etc. depending on `NODE_ENV=...`.
@@ -23,7 +23,7 @@ const liveServer = require("live-server");
   // `chokidar` watcher source changes.
   chokidar
     // Watches TypeScript and React TypeScript.
-    .watch("src/**/*.{js,jsx}", {
+    .watch("src/**/*.{js,tsx}", {
       interval: 0, // No delay
     })
     // Rebuilds esbuild (incrementally -- see `build.incremental`).
@@ -35,7 +35,7 @@ const liveServer = require("live-server");
     // Opens the local server on start.
     open: true,
     // Uses `PORT=...` or 8080 as a fallback.
-    port: +process.env.PORT || 8080,
+    port: parseInt(process.env.PORT || "8080", 10),
     // Uses `public` as the local server folder.
     root: "public",
   });
