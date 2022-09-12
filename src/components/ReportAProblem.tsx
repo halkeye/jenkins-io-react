@@ -1,16 +1,21 @@
 import React from 'react';
 
 interface ReportAProblemProps {
-  title: string | null
-  url: string | null
-  sourcePath: string | null
-  githubRepo: string | null
+  title?: string | null
+  url?: string | null
+  sourcePath?: string | null
+  githubRepo?: string | null
 }
 
 function ReportAProblem ({ title, url, sourcePath, githubRepo }: ReportAProblemProps): JSXNode {
-  if (!url || !sourcePath || !githubRepo) { return null; }
+  if (!sourcePath || !githubRepo) { return null; }
 
   const _document = typeof document !== 'undefined' ? document : { title: 'Unknown' };
+  const _location = typeof location !== 'undefined' ? location : { href: 'http://unknown' };
+
+  if (!url) {
+    url = _location.href;
+  }
 
   const queryParams = new URLSearchParams();
   queryParams.append('labels', 'bug');
