@@ -1,0 +1,13 @@
+node_modules/
+.cache/
+public
+
+src/layout.jsx
+src/layout.css
+static/site.webmanifest
+
+# Local Netlify folder
+.netlify
+
+schema.graphql
+dist/
