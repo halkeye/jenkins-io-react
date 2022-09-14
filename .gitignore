@@ -9,5 +9,4 @@ static/site.webmanifest
 # Local Netlify folder
 .netlify
 
-schema.graphql
-dist/
+lib/

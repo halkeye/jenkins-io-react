@@ -1,4 +1,5 @@
 import React from 'react';
+import dedent from 'dedent-js';
 
 interface ReportAProblemProps {
   title?: string | null
@@ -21,7 +22,7 @@ function ReportAProblem ({ title, url, sourcePath, githubRepo }: ReportAProblemP
   queryParams.append('labels', 'bug');
   queryParams.append('template', '4-bug.md');
   queryParams.append('title', `${title ?? _document.title} page - TODO: Put a summary here`);
-  queryParams.append('body', `
+  queryParams.append('body', dedent`
         Problem with the [${title ?? _document.title}](${url}) page,
         [source file](https://github.com/${githubRepo}/tree/master/src/${sourcePath})
 

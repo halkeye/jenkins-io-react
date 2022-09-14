@@ -170,7 +170,7 @@ async function makeReactLayout(siteUrl, extraCss = []) {
         }
     };
 
-    jsxLines.push('export default function Layout({ children, id, reportProblemUrl, reportProblemTitle, sourcePath}) {');
+    jsxLines.push('export default function Layout({ children, id, sourcePath}) {');
     jsxLines.push(`   const {site: { buildTime, siteMetadata: { githubRepo, siteUrl }}} = useStaticQuery(graphql\`
         query {
             site {
