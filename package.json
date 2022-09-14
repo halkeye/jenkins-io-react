@@ -20,7 +20,13 @@
     "lint-staged": "lint-staged",
     "lint": "eslint --ext .tsx,.ts -c .eslintrc.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "semantic-release": "semantic-release"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
   },
   "exports": {
     ".": {
@@ -74,6 +80,7 @@
     "live-server": "^1.2.2",
     "np": "^7.6.2",
     "rimraf": "^3.0.2",
+    "semantic-release": "^19.0.5",
     "ts-jest": "^29.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.3"
@@ -90,7 +97,6 @@
     "style-to-object": "^0.3.0"
   },
   "peerDependencies": {
-    "gatsby": "^4.18.0"
   },
   "files": [
     "lib/**/*",
@@ -124,5 +130,9 @@
         }
       ]
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/halkeye/jenkins-io-react.git"
   }
 }
