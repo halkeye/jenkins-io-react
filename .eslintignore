@@ -10,3 +10,4 @@ static/site.webmanifest
 .netlify
 
 lib/
+storybook-static/
