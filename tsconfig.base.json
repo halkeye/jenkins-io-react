@@ -12,6 +12,7 @@
     "jsx": "react"
   },
   "files": [
+    "./src/components/*.tsx",
     "./src/index.ts"
   ]
 }
