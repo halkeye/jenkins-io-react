@@ -11,7 +11,8 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react"
   },
-  "files": [
+  "include": [
+    "./src/components/*.tsx",
     "./src/index.ts"
   ]
 }
