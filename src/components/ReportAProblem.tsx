@@ -28,15 +28,15 @@ function ReportAProblem ({ title, url, sourcePath, githubRepo }: ReportAProblemP
 
         TODO: Describe the expected and actual behavior here
 
-        Screenshots
+        # Screenshots
 
         TODO: Add screenshots if possible
 
-        Possible Solution
+        # Possible Solution
 
         <!-- If you have suggestions on a fix for the bug, please describe it here. --
 
-        /A`);
+        N/A`);
   const pluginSiteReportUrl = `https://github.com/${githubRepo}/issues/new?${queryParams.toString()}`;
   return (
         <a href={pluginSiteReportUrl} title={`Report a problem with ${sourcePath}`}>
