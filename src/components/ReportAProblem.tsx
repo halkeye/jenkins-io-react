@@ -18,12 +18,20 @@ function ReportAProblem ({ title, url, sourcePath, githubRepo }: ReportAProblemP
     url = _location.href;
   }
 
+  if (!title) {
+    title = _document.title;
+  }
+
+  if (!title) {
+    title = url;
+  }
+
   const queryParams = new URLSearchParams();
   queryParams.append('labels', 'bug');
   queryParams.append('template', '4-bug.md');
-  queryParams.append('title', `${title ?? _document.title} page - TODO: Put a summary here`);
+  queryParams.append('title', `${title} page - TODO: Put a summary here`);
   queryParams.append('body', dedent`
-        Problem with the [${title ?? _document.title}](${url}) page,
+        Problem with the [${title}](${url}) page,
         [source file](https://github.com/${githubRepo}/tree/master/src/${sourcePath})
 
         TODO: Describe the expected and actual behavior here

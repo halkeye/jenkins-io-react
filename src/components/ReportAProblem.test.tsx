@@ -26,8 +26,21 @@ describe('ReportAProblem', () => {
     expect(linkElement).toHaveAttribute('href', expect.stringMatching(/title=document\+title\+page/));
     expect(linkElement).toHaveAttribute('href', expect.stringMatching(/%28http%3A%2F%2Flocalhost%2F%29/));
     expect(linkElement).toHaveAttribute('title', 'Report a problem with source/path');
-    expect(hrefURL.searchParams.get('title')).toEqual('document title page - TODO: Put a summary here')
-    expect(hrefURL.searchParams.get('body')?.split('\n')?.filter(line => line.startsWith(' '))).toEqual([])
+    expect(hrefURL.searchParams.get('title')).toEqual('document title page - TODO: Put a summary here');
+    expect(hrefURL.searchParams.get('body')?.split('\n')?.filter(line => line.startsWith(' '))).toEqual([]);
+  });
+  test('with no title, and no document title document, it uses url', async () => {
+    document.title = '';
+    render(<ReportAProblem sourcePath="source/path" githubRepo="github/repo" />);
+    const linkElement = screen.getByText(/Report a problem/);
+    expect(linkElement).toBeInTheDocument();
+    const hrefURL = new URL(linkElement.getAttribute('href')?.toString() as string);
+    expect(linkElement).toHaveAttribute('href', expect.stringMatching(/https:\/\/github.com\/github\/repo\/issues\/new/));
+    expect(linkElement).toHaveAttribute('href', expect.stringMatching(/title=http%3A%2F%2Flocalhost%2F\+page/));
+    expect(linkElement).toHaveAttribute('href', expect.stringMatching(/%28http%3A%2F%2Flocalhost%2F%29/));
+    expect(linkElement).toHaveAttribute('title', 'Report a problem with source/path');
+    expect(hrefURL.searchParams.get('title')).toEqual('http://localhost/ page - TODO: Put a summary here');
+    expect(hrefURL.searchParams.get('body')?.split('\n')?.filter(line => line.startsWith(' '))).toEqual([]);
   });
   test('with no url, it pulls from location', async () => {
     render(<ReportAProblem sourcePath="source/path" githubRepo="github/repo" title="thingie" />);
