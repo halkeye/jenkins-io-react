@@ -42,7 +42,7 @@ function ReportAProblem ({ title, url, sourcePath, githubRepo }: ReportAProblemP
 
         # Possible Solution
 
-        <!-- If you have suggestions on a fix for the bug, please describe it here. --
+        <!-- If you have suggestions on a fix for the bug, please describe it here. -->
 
         N/A`);
   const pluginSiteReportUrl = `https://github.com/${githubRepo}/issues/new?${queryParams.toString()}`;
