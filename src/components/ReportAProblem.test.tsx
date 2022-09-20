@@ -9,7 +9,7 @@ describe('ReportAProblem', () => {
     expect(container).toBeEmptyDOMElement();
   });
   test('Should show nothing by with just sourcePath ', async () => {
-    const { container } = render(<ReportAProblem sourcePath="/soucePath" />);
+    const { container } = render(<ReportAProblem sourcePath="/sourcePath" />);
     expect(container).toBeEmptyDOMElement();
   });
   test('Should show nothing by with just githubRepo ', async () => {

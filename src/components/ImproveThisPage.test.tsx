@@ -9,7 +9,7 @@ describe('ImproveThisPage', () => {
     expect(container).toBeEmptyDOMElement();
   });
   test('Should show nothing by with just sourcePath ', async () => {
-    const { container } = render(<ImproveThisPage sourcePath="/soucePath" />);
+    const { container } = render(<ImproveThisPage sourcePath="/sourcePath" />);
     expect(container).toBeEmptyDOMElement();
   });
   test('Should show nothing by with just githubRepo ', async () => {
