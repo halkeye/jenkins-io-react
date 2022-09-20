@@ -17,9 +17,7 @@ async function makeReactLayout(siteUrl, extraCss = []) {
         'import React from \'react\';',
         'import {useStaticQuery, graphql} from \'gatsby\';',
         'import { Helmet } from \'react-helmet\';',
-        'import SiteVersion from \'@halkeye/jenkins-io-react/dist/SiteVersion.cjs.js\';',
-        'import ReportAProblem from \'@halkeye/jenkins-io-react/dist/ReportAProblem.cjs.js\';',
-        'import ImproveThisPage from \'@halkeye/jenkins-io-react/dist/ImproveThisPage.cjs.js\';',
+        'import {SiteVersion, ReportAProblem, ImproveThisPage} from \'@halkeye/jenkins-io-react\';',
         'import \'./layout.css\';',
     ];
 
